@@ -1,11 +1,57 @@
 "use client";
-import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useFavoritesStore } from "../lib/favoritesStore";
+
 export default function BreedCard({ dog }) {
-  const [favorite, setFavorite] = useState(false);
-  return <article className="relative overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg">
-    <button type="button" onClick={() => setFavorite((old) => !old)} aria-pressed={favorite} aria-label={`${favorite ? "Remove" : "Add"} ${dog.name} ${favorite ? "from" : "to"} favorites`} className="absolute right-2 top-2 z-10 rounded-full bg-white p-2 text-xl shadow">{favorite ? "❤️" : "🤍"}</button>
-    <Link href={`/dogs/${dog.id}`} className="block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"><Image src={dog.image} alt={`${dog.name} dog`} width={500} height={350} className="h-44 w-full object-cover sm:h-56" /><div className="p-3"><h2 className="text-lg font-bold capitalize">{dog.name}</h2><p className="text-sm text-gray-500">{dog.country}</p></div></Link>
-  </article>;
+  // Hent favoritter og funktion fra Zustand
+  const favorites = useFavoritesStore((state) => state.favorites);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  // Vent til browseren er klar
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Undersøg om hunden er favorit
+  const isFavorite = mounted && favorites.includes(dog.id);
+
+  return (
+    <article className="relative overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg">
+      <Link href={`/dogs/${dog.id}`}>
+        <Image
+          src={dog.image}
+          alt={dog.name}
+          width={500}
+          height={300}
+          className="h-48 w-full object-cover"
+        />
+
+        <div className="p-4">
+          <h2 className="text-lg font-bold">{dog.name}</h2>
+          <p className="text-sm text-gray-500">{dog.country}</p>
+        </div>
+      </Link>
+
+      {/* Hjerteknap */}
+      <button
+        type="button"
+        onClick={() => toggleFavorite(dog.id)}
+        aria-label={
+          isFavorite
+            ? `Fjern ${dog.name} fra favoritter`
+            : `Tilføj ${dog.name} til favoritter`
+        }
+        className="absolute right-3 top-3 rounded-full bg-white p-2 text-2xl shadow-md transition-transform hover:scale-110"
+      >
+        <span className={isFavorite ? "text-red-500" : "text-gray-400"}>
+          {isFavorite ? "♥" : "♡"}
+        </span>
+      </button>
+    </article>
+  );
 }
