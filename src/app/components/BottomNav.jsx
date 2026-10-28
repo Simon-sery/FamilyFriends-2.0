@@ -7,18 +7,22 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 z-50 w-full border-t border-gray-100 bg-white py-5">
       <div className="mx-auto flex max-w-2xl items-center justify-around">
+        {/* Forside */}
         <Link href="/" aria-label="Home">
           <FiHome size={28} className="text-[#F5948F]" />
         </Link>
 
-        <span title="Favorites">
+        {/* Favoritside */}
+        <Link href="/favorites" aria-label="Favorites">
           <FiStar size={28} className="text-gray-400" />
-        </span>
+        </Link>
 
+        {/* Beskeder */}
         <span title="Messages">
           <FiMessageCircle size={28} className="text-gray-400" />
         </span>
 
+        {/* Profil */}
         <span title="Profile">
           <FiUser size={28} className="text-gray-400" />
         </span>

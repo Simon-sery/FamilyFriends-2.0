@@ -28,15 +28,16 @@ export default async function DogDetailPage({ params }) {
             className="h-105 w-full rounded-3xl object-cover"
           />
 
-          {/* Tilbageknap oven på billedet */}
+          {/* Tilbageknap */}
           <Link
             href="/"
+            aria-label="Back to home"
             className="absolute left-4 top-4 rounded-full bg-white px-4 py-3 text-xl shadow-md"
           >
             ←
           </Link>
 
-          {/* Favoritknap oven på billedet */}
+          {/* Zustand favoritknap */}
           <div className="absolute right-4 top-4">
             <FavoriteButton dog={dog} />
           </div>
@@ -69,7 +70,7 @@ export default async function DogDetailPage({ params }) {
           <p className="text-sm text-gray-400">Breed description</p>
 
           <p className="mt-2 text-lg leading-relaxed text-gray-600">
-            Learn more about {dog.name}, a dog breed from {dog.country}.
+            {dog.description}
           </p>
         </div>
 
@@ -78,7 +79,7 @@ export default async function DogDetailPage({ params }) {
           <p className="text-sm text-gray-400">Breed history</p>
 
           <p className="mt-2 text-lg leading-relaxed text-gray-600">
-            Explore the history and characteristics of {dog.name}.
+            {dog.history}
           </p>
         </div>
       </main>
